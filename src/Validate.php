@@ -11,6 +11,7 @@
 
 namespace think;
 
+use SplFileObject;
 use think\validate\ValidateRule;
 
 class Validate
@@ -667,7 +668,11 @@ class Validate
      */
     public function is($value, $rule, $data = [])
     {
-        switch (Loader::parseName($rule, 1, false)) {
+        $rule = preg_replace_callback('/_([a-zA-Z])/', function ($match) {
+            return strtoupper($match[1]);
+        }, $rule);
+
+        switch (lcfirst($rule)) {
             case 'require':
                 // 必须
                 $result = !empty($value) || '0' == $value;
@@ -697,10 +702,10 @@ class Validate
                 $result = is_array($value);
                 break;
             case 'file':
-                $result = $value instanceof File;
+                $result = $value instanceof SplFileObject;
                 break;
             case 'image':
-                $result = $value instanceof File && in_array($this->getImageType($value->getRealPath()), [1, 2, 3, 6]);
+                $result = $value instanceof SplFileObject && in_array($this->getImageType($value->getRealPath()), [1, 2, 3, 6]);
                 break;
             default:
                 if (isset(self::$type[$rule])) {
@@ -766,68 +771,94 @@ class Validate
     }
 
     /**
+     * 检测上传文件后缀
+     * @param SplFileObject     $file  上传文件
+     * @param  array|string     $ext    允许后缀
+     * @return bool
+     */
+    protected function checkExt($file, $ext)
+    {
+        $extension = strtolower(pathinfo($file->getfilename(), PATHINFO_EXTENSION));
+
+        if (is_string($ext)) {
+            $ext = explode(',', $ext);
+        }
+
+        if (!in_array($extension, $ext)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 验证上传文件后缀
      * @access public
-     * @param mixed     $file  上传文件
-     * @param mixed     $rule  验证规则
+     * @param SplFileObject     $file  上传文件
+     * @param mixed             $rule  验证规则
      * @return bool
      */
     public function fileExt($file, $rule)
     {
-        if (!($file instanceof File)) {
+        if (!($file instanceof SplFileObject)) {
             return false;
         }
 
-        if (is_string($rule)) {
-            $rule = explode(',', $rule);
+        return $this->checkExt($file, $rule);
+    }
+
+    /**
+     * 获取文件类型信息
+     * @param SplFileObject     $file  上传文件
+     * @return string
+     */
+    protected function getMime($file)
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+        return finfo_file($finfo, $file->getRealPath() ?: $file->getPathname());
+    }
+
+    /**
+     * 检测上传文件类型
+     * @param SplFileObject     $file  上传文件
+     * @param  array|string     $mime    允许类型
+     * @return bool
+     */
+    protected function checkMime($file, $mime)
+    {
+        if (is_string($mime)) {
+            $mime = explode(',', $mime);
         }
 
-        if (is_array($file)) {
-            foreach ($file as $item) {
-                if (!$item->checkExt($rule)) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return $file->checkExt($rule);
+        if (!in_array(strtolower($this->getMime($file)), $mime)) {
+            return false;
         }
+
+        return true;
     }
 
     /**
      * 验证上传文件类型
      * @access public
-     * @param mixed     $file  上传文件
-     * @param mixed     $rule  验证规则
+     * @param SplFileObject     $file  上传文件
+     * @param mixed             $rule  验证规则
      * @return bool
      */
     public function fileMime($file, $rule)
     {
-        if (!($file instanceof File)) {
+        if (!($file instanceof SplFileObject)) {
             return false;
         }
 
-        if (is_string($rule)) {
-            $rule = explode(',', $rule);
-        }
-
-        if (is_array($file)) {
-            foreach ($file as $item) {
-                if (!$item->checkMime($rule)) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return $file->checkMime($rule);
-        }
+        return $this->checkMime($file, $rule);
     }
 
     /**
      * 验证上传文件大小
      * @access public
-     * @param mixed     $file  上传文件
-     * @param mixed     $rule  验证规则
+     * @param SplFileObject     $file  上传文件
+     * @param mixed             $rule  验证规则
      * @return bool
      */
     public function fileSize($file, $rule)
@@ -836,28 +867,19 @@ class Validate
             return false;
         }
 
-        if (is_array($file)) {
-            foreach ($file as $item) {
-                if ($item->getSize() > $rule) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return $file->getSize() <= $rule;
-        }
+        return $file->getSize() <= $rule;
     }
 
     /**
      * 验证图片的宽高及类型
      * @access public
-     * @param mixed     $file  上传文件
-     * @param mixed     $rule  验证规则
+     * @param SplFileObject     $file  上传文件
+     * @param mixed             $rule  验证规则
      * @return bool
      */
     public function image($file, $rule)
     {
-        if (!($file instanceof File)) {
+        if (!($file instanceof SplFileInfo)) {
             return false;
         }
 
@@ -881,9 +903,8 @@ class Validate
             list($w, $h) = $rule;
 
             return $w == $width && $h == $height;
-        } else {
-            return in_array($this->getImageType($file->getRealPath()), [1, 2, 3, 6]);
         }
+        return in_array($this->getImageType($file->getRealPath()), [1, 2, 3, 6]);
     }
 
     /**
