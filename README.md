@@ -1,18 +1,14 @@
 # think-validate
 
-基于PHP5.6+ 的Validate实现，主要特性：
+基于PHP5.6+ 的Validate实现
 
-- 基于ThinkPHP5.1的ORM独立封装；
-- 保留了绝大部分的ThinkPHP ORM特性
-- 支持Db类和模型操作
-
-安装
+## 安装
 ~~~
 composer require topthink/think-validate
 ~~~
 
-用法：
-~~~
+## 用法
+~~~php
 use think\Validate;
 
 $validate = Validate::make([
@@ -31,7 +27,7 @@ if (!$validate->check($data)) {
 ~~~
 
 支持创建验证器进行数据验证
-~~~
+~~~php
 <?php
 namespace app\index\validate;
 
@@ -57,7 +53,7 @@ class User extends Validate
 ~~~
 
 验证器调用代码如下：
-~~~
+~~~php
 $data = [
     'name'  => 'thinkphp',
     'email' => 'thinkphp@qq.com',
