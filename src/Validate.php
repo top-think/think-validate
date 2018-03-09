@@ -183,7 +183,7 @@ class Validate
      */
     public function __construct(array $rules = [], $message = [], $field = [])
     {
-        $this->rule    = array_merge($this->rule, $rules);
+        $this->rule    = $rules + $this->rule;
         $this->message = array_merge($this->message, $message);
         $this->field   = array_merge($this->field, $field);
     }
@@ -210,7 +210,7 @@ class Validate
     public function rule($name, $rule = '')
     {
         if (is_array($name)) {
-            $this->rule = array_merge($this->rule, $name);
+            $this->rule = $name + $this->rule;
             if (is_array($rule)) {
                 $this->field = array_merge($this->field, $rule);
             }
@@ -1278,7 +1278,7 @@ class Validate
             $rule = '/^' . $rule . '$/';
         }
 
-        return 1 === preg_match($rule, (string) $value);
+        return is_scalar($value) && 1 === preg_match($rule, (string) $value);
     }
 
     // 获取错误信息
