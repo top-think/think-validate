@@ -1288,6 +1288,19 @@ class Validate
     }
 
     /**
+     * 获取错误信息
+     * @return string
+     */
+    public function getErrorLine()
+    {
+        if (!is_array($this->error)) {
+            return $this->error;
+        }
+
+        return implode(',', $this->error);
+    }
+
+    /**
      * 获取数据值
      * @access protected
      * @param array     $data  数据
