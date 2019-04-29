@@ -1,6 +1,6 @@
 # think-validate
 
-基于PHP5.6+ 的Validate实现
+基于PHP7.1+ 的Validate实现
 
 ## 安装
 ~~~
@@ -9,9 +9,9 @@ composer require topthink/think-validate
 
 ## 用法
 ~~~php
-use think\Validate;
+use think\facade\Validate;
 
-$validate = Validate::make([
+$validate = Validate::rule([
     'name'  => 'require|max:25',
     'email' => 'email'
 ]);
@@ -66,4 +66,4 @@ if (!$validate->check($data)) {
 }
 ~~~
 
-更多用法可以参考5.1完全开发手册的[验证](https://www.kancloud.cn/manual/thinkphp5_1/354101)章节
+更多用法可以参考6.0完全开发手册的[验证](https://www.kancloud.cn/manual/thinkphp6_0/1037623)章节
