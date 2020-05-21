@@ -154,7 +154,7 @@ class Validate
 
     /**
      * 验证失败错误信息
-     * @var array
+     * @var array|string
      */
     protected $error = [];
 
