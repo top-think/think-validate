@@ -998,7 +998,7 @@ class Validate
             $param = isset($rule[1]) ? $rule[1] : null;
             $rule  = $rule[0];
         } else {
-            $param = null;
+            $param = [];
         }
 
         return false !== filter_var($value, is_int($rule) ? $rule : filter_id($rule), $param);
