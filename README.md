@@ -2,6 +2,17 @@
 
 基于PHP8.0+ 的Validate实现
 
+## 主要特性
+- 基于PHP8和强类型实现
+- 内置丰富的验证规则
+- 支持验证器类、数组和链式方法定义验证规则
+- 支持验证场景和验证分组
+- 支持独立数据验证
+- 支持枚举验证
+- 支持批量验证
+- 支持抛出异常
+
+
 ## 安装
 ~~~
 composer require topthink/think-validate
@@ -65,3 +76,7 @@ if (!$validate->check($data)) {
     var_dump($validate->getError());
 }
 ~~~
+
+## 文档
+
+详细使用请参考 [ThinkValidate开发指南](https://doc.thinkphp.cn/@think-validate)
