@@ -2,12 +2,13 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006-2021 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
+declare (strict_types = 1);
 
 namespace think\exception;
 
@@ -16,12 +17,9 @@ namespace think\exception;
  */
 class ValidateException extends \RuntimeException
 {
-    protected $error;
-
-    public function __construct($error)
+    public function __construct(protected $error, protected $key = '')
     {
-        $this->error   = $error;
-        $this->message = is_array($error) ? implode("\n\r", $error) : $error;
+        $this->message = is_array($error) ? json_encode($error) : $error;
     }
 
     /**
@@ -33,4 +31,15 @@ class ValidateException extends \RuntimeException
     {
         return $this->error;
     }
+
+    /**
+     * 获取验证错误字段
+     * @access public
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
 }

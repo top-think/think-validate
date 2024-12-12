@@ -1,6 +1,6 @@
 # think-validate
 
-基于PHP7.1+ 的Validate实现
+基于PHP8.0+ 的Validate实现
 
 ## 安装
 ~~~
@@ -65,5 +65,3 @@ if (!$validate->check($data)) {
     var_dump($validate->getError());
 }
 ~~~
-
-更多用法可以参考6.0完全开发手册的[验证](https://www.kancloud.cn/manual/thinkphp6_0/1037623)章节
