@@ -17,6 +17,7 @@
             "think\\": "src"
         },
         "files": [
+            "src/helper.php"
         ]
     }
 }
