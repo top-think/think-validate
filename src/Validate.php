@@ -628,23 +628,13 @@ class Validate
             if (str_contains($name, '|')) {
                 // 字段|描述 用于指定属性名称
                 [$name, $title] = explode('|', $name);
-            } else {
-                $title = $this->field[$name] ?? $name;
+            } elseif (isset($this->field[$name])) {
+                $title = $this->field[$name];
             }
 
             $values = $this->getDataSet($data, $name);
             if (empty($values)) {
-                if (is_string($item)) {
-                    $array = explode('|', $item);
-                } elseif (is_array($item)) {
-                    $array = $item;
-                }
-
-                if (isset($array) && false !== array_search('require', $array)) {
-                    $message = $this->getRuleMsg($name, $title, 'require', $item);
-                    throw new ValidateException($message, $name);
-                }
-                continue;
+                $values[$name] = null;
             }
 
             foreach ($values as $value) {
@@ -663,8 +653,7 @@ class Validate
                     }
 
                     $this->error[$name] = $result;
-
-                    if (!empty($this->batch)) {
+                    if ($this->batch) {
                         // 批量验证
                     } elseif ($this->failException) {
                         throw new ValidateException($result, $name);
