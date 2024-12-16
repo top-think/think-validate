@@ -525,6 +525,26 @@ class Validate
     }
 
     /**
+     * 返回定义的验证规则
+     * @access protected
+     * @return mixed
+     */
+    protected function rules()
+    {
+        return $this->rule;
+    }
+
+    /**
+     * 获取当前的验证规则
+     * @access public
+     * @return array
+     */
+    public function getRules(): array
+    {
+        return $this->rule;
+    }
+
+    /**
      * 数据自动验证
      * @access public
      * @param array $data  数据
@@ -541,7 +561,7 @@ class Validate
 
         if (empty($rules)) {
             // 读取验证规则
-            $rules = $this->rule;
+            $rules = $this->rules();
         } elseif (is_string($rules)) {
             $rules = $this->getGroupRules($rules);
             // 分组独立检测
@@ -551,9 +571,11 @@ class Validate
                     ->batch($this->batch)
                     ->failException($this->failException)
                     ->check($data);
-            } elseif ($rules instanceof Validate) {
-                return $rules->check($data);
             }
+        }
+
+        if ($rules instanceof Validate) {
+            $rules =  $rules->getRules();
         }
 
         foreach ($this->append as $key => $rule) {
