@@ -242,6 +242,35 @@ class Validate
     protected $regex = [];
 
     /**
+     * @var Closure[]
+     */
+    protected static $maker = [];
+
+    /**
+     * 构造方法
+     * @access public
+     */
+    public function __construct()
+    {
+        if (!empty(static::$maker)) {
+            foreach (static::$maker as $maker) {
+                call_user_func($maker, $this);
+            }
+        }
+    }
+
+    /**
+     * 设置服务注入
+     * @access public
+     * @param Closure $maker
+     * @return void
+     */
+    public static function maker(Closure $maker)
+    {
+        static::$maker[] = $maker;
+    }
+
+    /**
      * 添加字段验证规则
      * @access protected
      * @param string|array $name 字段名称或者规则数组
@@ -555,10 +584,6 @@ class Validate
     {
         $this->error = [];
 
-        if ($this->currentScene) {
-            $this->getScene($this->currentScene);
-        }
-
         if (empty($rules)) {
             // 读取验证规则
             $rules = $this->rules();
@@ -578,6 +603,10 @@ class Validate
             $rules =  $rules->getRules();
         }
 
+        if ($this->currentScene) {
+            $this->getScene($this->currentScene);
+        }
+        
         foreach ($this->append as $key => $rule) {
             if (!isset($rules[$key])) {
                 $rules[$key] = $rule;
@@ -1943,7 +1972,7 @@ class Validate
      */
     protected function getGroupRules(string $group)
     {
-        $method = 'group' . Str::studly($group);
+        $method = 'rules' . Str::studly($group);
         if (method_exists($this, $method)) {
             $validate =  call_user_func_array([$this, $method], [new self]);
             return $validate->alias($this->alias)
