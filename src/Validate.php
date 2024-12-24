@@ -1065,7 +1065,7 @@ class Validate
             'declined' => in_array($value, ['0', 'off', 'no', 'false', 0, false], true), // 不接受
             'date' => false !== strtotime($value), // 是否是一个有效日期
             'activeUrl' => checkdnsrr($value), // 是否为有效的网址
-            'boolean', 'bool' => in_array($value, [true, false, 0, 1, '0', '1'], true), // 是否为布尔值
+            'boolean', 'bool' => in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true), // 是否为布尔值
             'number' => ctype_digit((string) $value),
             'alphaNum' => ctype_alnum($value),
             'array'    => is_array($value), // 是否为数组
