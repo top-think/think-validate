@@ -40,7 +40,7 @@ if (!function_exists('validate')) {
             }
 
             if (class_exists($validate)) {
-                $v = new $class();
+                $v = new $validate();
 
                 if (!empty($scene)) {
                     $v->scene($scene);
