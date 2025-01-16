@@ -50,8 +50,8 @@ use think\Facade;
  * @method static bool after(mixed $value, mixed $rule) 验证日期
  * @method static bool before(mixed $value, mixed $rule) 验证日期
  * @method static bool expire(mixed $value, mixed $rule) 验证有效期
- * @method static bool allowIp(mixed $value, mixed $rule) 验证IP许可
- * @method static bool denyIp(mixed $value, mixed $rule) 验证IP禁用
+ * @method static bool allowIp(mixed $value, mixed $rule) 验证 IP 许可
+ * @method static bool denyIp(mixed $value, mixed $rule) 验证 IP 禁用
  * @method static bool regex(mixed $value, mixed $rule) 使用正则验证数据
  * @method static bool token(mixed $value, mixed $rule) 验证表单令牌
  * @method static bool dateFormat(mixed $value, mixed $rule) 验证时间和日期是否符合指定格式
