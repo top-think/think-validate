@@ -751,7 +751,7 @@ class Validate
                     if ($this->batch) {
                         // 批量验证
                     } elseif ($this->failException) {
-                        throw new ValidateException($result, $name);
+                         throw new ValidateException(str_replace(substr($result, 0, strspn($result, $name)),$name,$result), $name);
                     } else {
                         return false;
                     }
