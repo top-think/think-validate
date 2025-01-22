@@ -730,8 +730,8 @@ class Validate
             if (str_contains($name, '|')) {
                 // 字段|描述 用于指定属性名称
                 [$name, $title] = explode('|', $name);
-            } elseif (isset($this->field[$name])) {
-                $title = $this->field[$name];
+            } else {
+                $title = $this->field[$name] ?? $name;
             }
 
             $values = $this->getDataSet($data, $name);
@@ -1107,20 +1107,20 @@ class Validate
         };
 
         return match (Str::camel($rule)) {
-            'require' => !empty($value) || '0' == $value, // 必须
-            'accepted' => in_array($value, ['1', 'on', 'yes', 'true', 1, true], true), // 接受
-            'declined' => in_array($value, ['0', 'off', 'no', 'false', 0, false], true), // 不接受
-            'date' => false !== strtotime($value), // 是否是一个有效日期
-            'activeUrl' => checkdnsrr($value), // 是否为有效的网址
-            'boolean', 'bool' => in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true), // 是否为布尔值
-            'number' => ctype_digit((string) $value),
-            'alphaNum' => ctype_alnum($value),
-            'array'    => is_array($value), // 是否为数组
-            'string'   => is_string($value),
-            'file'     => $value instanceof File,
-            'image'    => $value instanceof File && in_array($this->getImageType($value->getRealPath()), [1, 2, 3, 6]),
-            'token'    => $this->token($value, '__token__', $data),
-            default    => $call($value, $rule),
+            'require'         => !empty($value) || '0' == $value,
+            'accepted'        => in_array($value, ['1', 'on', 'yes', 'true', 1, true], true),
+            'declined'        => in_array($value, ['0', 'off', 'no', 'false', 0, false], true),
+            'boolean', 'bool' => in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true),
+            'date'            => false !== strtotime($value),
+            'activeUrl'       => checkdnsrr($value),
+            'number'          => ctype_digit((string) $value),
+            'alphaNum'        => ctype_alnum($value),
+            'array'           => is_array($value),
+            'string'          => is_string($value),
+            'file'            => $value instanceof File,
+            'image'           => $value instanceof File && in_array($this->getImageType($value->getRealPath()), [1, 2, 3, 6]),
+            'token'           => $this->token($value, '__token__', $data),
+            default           => $call($value, $rule),
         };
     }
 
@@ -1928,7 +1928,10 @@ class Validate
         if (is_string($key) && str_contains($key, '*')) {
             if (substr_count($key, '*') > 1) {
                 [$key1, $key2] = explode('.*.', $key, 2);
-                $data = $this->getDataSet($data, $key1 . '.*')[0];
+
+                $array = $this->getDataValue($data, $key1);
+                $data  = is_array($array) ? $this->getDataSet($data, $key1 . '.*')[0] : [];
+
                 return $this->getDataSet($data, $key2);
             }
 
@@ -1941,7 +1944,11 @@ class Validate
             // user.*.id
             [$key, $column] = explode('.*.', $key);
 
-            $value = $this->getRecursiveData($data, $key) ?: [];
+            $value = $this->getRecursiveData($data, $key);
+            if (!is_array($value)) {
+                $value = [];
+            }
+
             return array_map(function ($item) use ($column) {
                 return $item[$column] ?? null;
             }, $value);
