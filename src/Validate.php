@@ -329,7 +329,6 @@ class Validate
 
     /**
      * 构造方法
-     * @access public
      */
     public function __construct()
     {
@@ -342,7 +341,6 @@ class Validate
 
     /**
      * 设置服务注入
-     * @access public
      * @param Closure $maker
      * @return void
      */
@@ -353,7 +351,6 @@ class Validate
 
     /**
      * 设置Lang对象
-     * @access public
      * @param Lang $lang Lang对象
      * @return void
      */
@@ -363,8 +360,17 @@ class Validate
     }
 
     /**
+     * 使用中文提示
+     * @return $this
+     */
+    public function useZh()
+    {
+        $this->typeMsg = array_merge($this->typeMsg, $this->typeMsgZh);
+        return $this;
+    }
+
+    /**
      * 设置Db对象
-     * @access public
      * @param Db $db Db对象
      * @return void
      */
@@ -375,7 +381,6 @@ class Validate
 
     /**
      * 设置Request对象
-     * @access public
      * @param Request $request Request对象
      * @return void
      */
@@ -386,7 +391,6 @@ class Validate
 
     /**
      * 添加字段验证规则
-     * @access protected
      * @param string|array $name 字段名称或者规则数组
      * @param mixed        $rule 验证规则或者字段描述信息
      * @param string|array $msg  错误信息
@@ -414,7 +418,6 @@ class Validate
 
     /**
      * 获取所有验证规则
-     * @access public
      * @return array
      */
     public function getRule(): array
@@ -424,7 +427,6 @@ class Validate
 
     /**
      * 添加验证规则别名
-     * @access public
      * @param string|array $name 验证规则别名或者别名数组
      * @param mixed        $rule 验证规则
      * @return $this
@@ -448,7 +450,6 @@ class Validate
      * group('group',function($validate) {
      *      return $validate->rule('name','rule...');
      * })
-     * @access public
      * @param string        $name  分组名
      * @param array|Closure $rules 验证规则
      * @return $this
@@ -462,7 +463,6 @@ class Validate
 
     /**
      * 添加验证规则集 支持闭包或数组
-     * @access public
      * @param string        $name  分组名
      * @param array|Closure $rules 验证规则
      * @param array         $msg   错误信息
@@ -477,7 +477,6 @@ class Validate
 
     /**
      * 注册验证（类型）规则
-     * @access public
      * @param string   $type     验证规则类型
      * @param callable $callback callback方法(或闭包)
      * @param string   $message  验证失败提示信息
@@ -496,7 +495,6 @@ class Validate
 
     /**
      * 设置验证规则的默认提示信息
-     * @access public
      * @param string|array $type 验证规则类型名称或者数组
      * @param string       $msg  验证提示信息
      * @return void
@@ -512,9 +510,8 @@ class Validate
 
     /**
      * 设置提示信息
-     * @access public
      * @param array $message 错误信息
-     * @return Validate
+     * @return $this
      */
     public function message(array $message)
     {
@@ -525,7 +522,6 @@ class Validate
 
     /**
      * 获取提示信息
-     * @access public
      * @return array
      */
     public function getMessage(): array
@@ -535,7 +531,6 @@ class Validate
 
     /**
      * 设置验证场景或直接指定需要验证的字段
-     * @access public
      * @param string|array $name 场景名
      * @return $this
      */
@@ -553,7 +548,6 @@ class Validate
 
     /**
      * 判断是否存在某个验证场景
-     * @access public
      * @param string $name 场景名
      * @return bool
      */
@@ -564,7 +558,6 @@ class Validate
 
     /**
      * 设置批量验证
-     * @access public
      * @param bool $batch 是否批量验证
      * @return $this
      */
@@ -577,7 +570,6 @@ class Validate
 
     /**
      * 设置验证失败后是否抛出异常
-     * @access protected
      * @param bool $fail 是否抛出异常
      * @return $this
      */
@@ -590,7 +582,6 @@ class Validate
 
     /**
      * 指定需要验证的字段列表
-     * @access public
      * @param array $fields 字段名
      * @return $this
      */
@@ -603,7 +594,6 @@ class Validate
 
     /**
      * 指定需要覆盖的字段验证规则
-     * @access public
      * @param string $field 字段名
      * @param mixed  $rules 验证规则
      * @return $this
@@ -617,7 +607,6 @@ class Validate
 
     /**
      * 移除某个字段的验证规则
-     * @access public
      * @param string|array $field 字段名
      * @param mixed        $rule  验证规则 true 移除所有规则
      * @return $this
@@ -645,7 +634,6 @@ class Validate
 
     /**
      * 追加某个字段的验证规则
-     * @access public
      * @param string|array $field 字段名
      * @param mixed        $rule  验证规则
      * @return $this
@@ -669,7 +657,6 @@ class Validate
 
     /**
      * 返回定义的验证规则
-     * @access protected
      * @return mixed
      */
     protected function rules()
@@ -679,7 +666,6 @@ class Validate
 
     /**
      * 获取当前的验证规则
-     * @access public
      * @return array
      */
     public function getRules(): array
@@ -689,7 +675,6 @@ class Validate
 
     /**
      * 数据自动验证
-     * @access public
      * @param array $data  数据
      * @param array|string $rules 验证规则
      * @return bool
@@ -760,7 +745,6 @@ class Validate
 
     /**
      * 验证字段规则
-     * @access protected
      * @param string $key   字段名
      * @param mixed  $rule  验证规则
      * @param array  $data  数据
@@ -826,7 +810,6 @@ class Validate
 
     /**
      * 根据验证规则验证数据
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rules 验证规则
      * @return bool
@@ -866,7 +849,6 @@ class Validate
 
     /**
      * 验证单个字段规则
-     * @access protected
      * @param string $field 字段名
      * @param mixed  $value 字段值
      * @param mixed  $rules 验证规则
@@ -984,7 +966,6 @@ class Validate
 
     /**
      * 获取当前验证类型及规则
-     * @access public
      * @param mixed $key
      * @param mixed $rule
      * @return array
@@ -1023,7 +1004,6 @@ class Validate
 
     /**
      * 验证是否和某个字段的值一致
-     * @access public
      * @param mixed  $value 字段值
      * @param mixed  $rule  验证规则
      * @param array  $data  数据
@@ -1045,7 +1025,6 @@ class Validate
 
     /**
      * 验证是否和某个字段的值是否不同
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1058,7 +1037,6 @@ class Validate
 
     /**
      * 验证是否大于等于某个值
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1071,7 +1049,6 @@ class Validate
 
     /**
      * 验证是否大于某个值
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1084,7 +1061,6 @@ class Validate
 
     /**
      * 验证是否小于等于某个值
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1097,7 +1073,6 @@ class Validate
 
     /**
      * 验证是否小于某个值
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1110,7 +1085,6 @@ class Validate
 
     /**
      * 验证是否等于某个值
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1122,7 +1096,6 @@ class Validate
 
     /**
      * 验证是否不等于某个值
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1134,7 +1107,6 @@ class Validate
 
     /**
      * 必须验证
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1146,7 +1118,6 @@ class Validate
 
     /**
      * 验证字段值是否为有效格式
-     * @access public
      * @param mixed  $value 字段值
      * @param string $rule  验证规则
      * @param array  $data  数据
@@ -1204,7 +1175,6 @@ class Validate
 
     /**
      * 验证表单令牌
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1221,7 +1191,6 @@ class Validate
 
     /**
      * 验证是否为合格的域名或者IP 支持A，MX，NS，SOA，PTR，CNAME，AAAA，A6， SRV，NAPTR，TXT 或者 ANY类型
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1237,7 +1206,6 @@ class Validate
 
     /**
      * 验证是否有效IP
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则 ipv4 ipv6
      * @return bool
@@ -1253,7 +1221,6 @@ class Validate
 
     /**
      * 检测是否以某个字符串开头
-     * @access public
      * @param mixed $value 字段值
      * @param string $rule  验证规则
      * @return bool
@@ -1265,7 +1232,6 @@ class Validate
 
     /**
      * 检测是否以某个字符串结尾
-     * @access public
      * @param mixed $value 字段值
      * @param string $rule  验证规则
      * @return bool
@@ -1277,7 +1243,6 @@ class Validate
 
     /**
      * 检测是否以包含某个字符串
-     * @access public
      * @param mixed $value 字段值
      * @param string $rule  验证规则
      * @return bool
@@ -1289,7 +1254,6 @@ class Validate
 
     /**
      * 检测上传文件后缀
-     * @access public
      * @param File         $file
      * @param array|string $ext 允许后缀
      * @return bool
@@ -1305,7 +1269,6 @@ class Validate
 
     /**
      * 检测上传文件大小
-     * @access public
      * @param File    $file
      * @param integer $size 最大大小
      * @return bool
@@ -1317,7 +1280,6 @@ class Validate
 
     /**
      * 检测上传文件类型
-     * @access public
      * @param File         $file
      * @param array|string $mime 允许类型
      * @return bool
@@ -1333,7 +1295,6 @@ class Validate
 
     /**
      * 验证上传文件后缀
-     * @access public
      * @param mixed $file 上传文件
      * @param mixed $rule 验证规则
      * @return bool
@@ -1356,7 +1317,6 @@ class Validate
 
     /**
      * 验证上传文件类型
-     * @access public
      * @param mixed $file 上传文件
      * @param mixed $rule 验证规则
      * @return bool
@@ -1379,7 +1339,6 @@ class Validate
 
     /**
      * 验证上传文件大小
-     * @access public
      * @param mixed $file 上传文件
      * @param mixed $rule 验证规则
      * @return bool
@@ -1402,7 +1361,6 @@ class Validate
 
     /**
      * 验证图片的宽高及类型
-     * @access public
      * @param mixed $file 上传文件
      * @param mixed $rule 验证规则
      * @return bool
@@ -1440,7 +1398,6 @@ class Validate
 
     /**
      * 验证时间和日期是否符合指定格式
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1456,7 +1413,6 @@ class Validate
 
     /**
      * 验证是否唯一
-     * @access public
      * @param mixed  $value 字段值
      * @param mixed  $rule  验证规则 格式：数据表,字段名,排除ID,主键名
      * @param array  $data  数据
@@ -1520,7 +1476,6 @@ class Validate
 
     /**
      * 使用filter_var方式验证
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1541,7 +1496,6 @@ class Validate
 
     /**
      * 验证某个字段等于某个值的时候必须
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1560,7 +1514,6 @@ class Validate
 
     /**
      * 通过回调方法验证某个字段是否必须
-     * @access public
      * @param mixed        $value 字段值
      * @param string|array $rule  验证规则
      * @param array        $data  数据
@@ -1580,7 +1533,6 @@ class Validate
 
     /**
      * 验证某个字段有值的情况下必须
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1599,7 +1551,6 @@ class Validate
 
     /**
      * 验证某个字段没有值的情况下必须
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1618,7 +1569,6 @@ class Validate
 
     /**
      * 验证是否为数组，支持检查键名
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1638,7 +1588,6 @@ class Validate
 
     /**
      * 验证是否在范围内
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1650,7 +1599,6 @@ class Validate
 
     /**
      * 验证是否为枚举
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1673,7 +1621,6 @@ class Validate
 
     /**
      * 验证是否不在某个范围
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1685,7 +1632,6 @@ class Validate
 
     /**
      * between验证数据
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1699,7 +1645,6 @@ class Validate
 
     /**
      * 使用notbetween验证数据
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1713,7 +1658,6 @@ class Validate
 
     /**
      * 验证数据长度
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1740,7 +1684,6 @@ class Validate
 
     /**
      * 验证数据最大长度
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1760,7 +1703,6 @@ class Validate
 
     /**
      * 验证数据最小长度
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1780,7 +1722,6 @@ class Validate
 
     /**
      * 验证日期
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1793,7 +1734,6 @@ class Validate
 
     /**
      * 验证日期
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1806,7 +1746,6 @@ class Validate
 
     /**
      * 验证日期
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1820,7 +1759,6 @@ class Validate
 
     /**
      * 验证日期
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @param array $data  数据
@@ -1834,7 +1772,6 @@ class Validate
 
     /**
      * 验证有效期
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1856,7 +1793,6 @@ class Validate
 
     /**
      * 验证IP许可
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1868,7 +1804,6 @@ class Validate
 
     /**
      * 验证IP禁用
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则
      * @return bool
@@ -1880,7 +1815,6 @@ class Validate
 
     /**
      * 验证某个字段等于指定的值，则验证中的字段必须为 yes、on、1 或 true
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule 验证规则
      * @param array $data 数据
@@ -1899,7 +1833,6 @@ class Validate
 
     /**
      * 验证某个字段等于指定的值，则验证中的字段必须为 no、off、0 或 false
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule 验证规则
      * @param array $data 数据
@@ -1933,7 +1866,6 @@ class Validate
 
     /**
      * 使用正则验证数据
-     * @access public
      * @param mixed $value 字段值
      * @param mixed $rule  验证规则 正则规则或者预定义正则名
      * @return bool
@@ -1952,7 +1884,6 @@ class Validate
 
     /**
      * 获取内置正则验证规则
-     * @access public
      * @param string $rule  验证规则 正则规则或者预定义正则名
      * @return string
      */
@@ -1981,7 +1912,6 @@ class Validate
 
     /**
      * 获取数据集合
-     * @access protected
      * @param array  $data 数据
      * @param string $key  数据标识 支持二维
      * @return array
@@ -2023,7 +1953,6 @@ class Validate
 
     /**
      * 获取数据值
-     * @access protected
      * @param array  $data 数据
      * @param string $key  数据标识 支持二维
      * @return mixed
@@ -2044,12 +1973,10 @@ class Validate
 
     /**
      * 获取数据值
-     * @access protected
      * @param array  $data 数据
      * @param string $key  数据标识 支持二维
      * @return mixed
      */
-
     protected function getRecursiveData(array $data, string $key)
     {
         $keys = explode('.', $key);
@@ -2065,7 +1992,6 @@ class Validate
 
     /**
      * 获取验证规则的错误提示信息
-     * @access protected
      * @param string $attribute 字段英文名
      * @param string $title     字段描述名
      * @param string $type      验证规则名称
@@ -2082,8 +2008,6 @@ class Validate
             $msg = $this->message[$attribute];
         } elseif (isset($this->typeMsg[$type])) {
             $msg = $this->typeMsg[$type];
-        } elseif (!$this->lang && isset($this->typeMsgZh[$type])) {
-            $msg = $this->typeMsgZh[$type];
         } elseif (str_starts_with($type, 'require')) {
             $msg = $this->typeMsg['require'];
         } else {
@@ -2099,7 +2023,6 @@ class Validate
 
     /**
      * 获取验证规则的错误提示信息
-     * @access protected
      * @param string $msg   错误信息
      * @param mixed  $rule  验证规则数据
      * @param string $title 字段描述名
@@ -2148,7 +2071,6 @@ class Validate
 
     /**
      * 错误信息数组处理
-     * @access protected
      * @param array $msg   错误信息
      * @param mixed  $rule  验证规则数据
      * @param string $title 字段描述名
@@ -2166,7 +2088,6 @@ class Validate
 
     /**
      * 获取数据验证的场景
-     * @access protected
      * @param string $scene 验证场景
      * @return void
      */
@@ -2183,7 +2104,6 @@ class Validate
 
     /**
      * 获取验证分组
-     * @access protected
      * @param string $group 分组名
      * @return mixed
      */
@@ -2201,7 +2121,6 @@ class Validate
 
     /**
      * 动态方法 直接调用is方法进行验证
-     * @access public
      * @param string $method 方法名
      * @param array  $args   调用参数
      * @return bool
