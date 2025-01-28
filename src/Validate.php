@@ -17,6 +17,7 @@ use BackedEnum;
 use Closure;
 use think\contract\Enumable;
 use think\exception\ValidateException;
+use think\helper\Arr;
 use think\helper\Str;
 use think\validate\ValidateRule;
 use think\validate\ValidateRuleSet;
@@ -741,6 +742,36 @@ class Validate
         }
 
         return true;
+    }
+
+    /**
+     * 返回经过验证的数据，只包含验证规则中的数据
+     * @param array $data
+     * @param array|string $rules
+     * @return array
+     */
+    public function checked(array $data, array|string $rules = []): array
+    {
+        $checkRes = $this->check($data, $rules);
+
+        if (!$checkRes) {
+            throw new ValidateException($this->error);
+        }
+
+        $results       = [];
+        $missingValue = Str::random(10);
+
+        // 注意 这里只支持 原生 形式的 key ， tp 的特有格式的 "key|title" 这种格式的就不支持了
+        // 原生格式的 key 指的是 类似 key.item_key.item 这种完全由 key 和 . 组合的字符串
+        foreach (array_keys($this->getRules()) as $key) {
+            $value = data_get($data, $key, $missingValue);
+
+            if ($value !== $missingValue) {
+                Arr::set($results, $key, $value);
+            }
+        }
+
+        return $results;
     }
 
     /**
