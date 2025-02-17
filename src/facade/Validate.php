@@ -63,6 +63,12 @@ use think\Facade;
 class Validate extends Facade
 {
     /**
+     * 始终创建新的对象实例
+     * @var bool
+     */
+    protected static $alwaysNewInstance = true;
+
+    /**
      * 获取当前Facade对应类名（或者已经绑定的容器对象标识）
      * @access protected
      * @return string
