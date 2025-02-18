@@ -204,7 +204,7 @@ class Validate
         'multipleOf'  => ':attribute必须是 :rule 的倍数',
         'fileSize'    => '文件大小不符',
         'fileExt'     => '文件后缀不允许',
-        'fileMime'    => '文件类型不允许',        
+        'fileMime'    => '文件类型不允许',
         'method'      => '无效的请求类型',
         'token'       => '令牌数据无效',
     ];
@@ -750,7 +750,7 @@ class Validate
      * @param array|string $rules
      * @return array
      */
-    public function checked(array $data, array|string $rules = []): array
+    public function checked(array $data, array | string $rules = []): array
     {
         $checkRes = $this->check($data, $rules);
 
@@ -758,12 +758,13 @@ class Validate
             throw new ValidateException($this->error);
         }
 
-        $results       = [];
+        $results      = [];
         $missingValue = Str::random(10);
 
-        // 注意 这里只支持 原生 形式的 key ， tp 的特有格式的 "key|title" 这种格式的就不支持了
-        // 原生格式的 key 指的是 类似 key.item_key.item 这种完全由 key 和 . 组合的字符串
         foreach (array_keys($this->getRules()) as $key) {
+            if (str_contains($key, '|')) {
+                [$key] = explode('|', $key);
+            }
             $value = data_get($data, $key, $missingValue);
 
             if ($value !== $missingValue) {
